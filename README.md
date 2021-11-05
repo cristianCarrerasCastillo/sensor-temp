@@ -15,6 +15,19 @@ Luego de esto empieza a medir la temperatura y humedad del ambiente.
 
 Luego de ingresar un ssid y password, el dispositivo debe reiniciar para que se conecte a la red wifi.
 
+## Capturas de pantalla ##
+Index
+
+<img src="./img/index.jpeg" width="250" />
+
+Escaner
+
+<img src="./img/scan.jpeg" width="250" />
+
+Clave Guardada
+
+<img src="./img/config_guardada.jpeg" width="250" />
+
 
 # EN #
 ## Sensor of temperature and humidity, IOT device ##
@@ -32,3 +45,17 @@ After that it starts measuring the temperature and humidity of the environment.
 
 
 After entering a ssid and password, the device must restart to connect to the wifi network.
+
+
+## Screenshots ##
+Index
+
+<img src="./img/index.jpeg" width="250" />
+
+Scanner
+
+<img src="./img/scan.jpeg" width="250" />
+
+Password saved
+
+<img src="./img/config_guardada.jpeg" width="250" />

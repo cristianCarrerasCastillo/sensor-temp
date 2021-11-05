@@ -56,19 +56,32 @@ String mensaje = "";
 String pagina = "<!DOCTYPE html>"
 "<html>"
 "<head>"
-"<title>GeoSmart</title>"
+"<title>Temp Config</title>"
 "<meta name='viewport' content='width=device-width, initial-scale=1.0'>"
 "<meta charset='UTF-8'>"
+"<style>"
+  "tr:nth-child(even){"
+  "          background-color: #ddd;"
+  "      }"
+  ".btn{"
+    "background-color: rgb(179, 179, 179);"
+    "color: white;"
+    "padding: 14px 20px;"
+    "margin: 8px 0;"
+    "border: none;"
+    "cursor: pointer;"
+  "}"
+"</style>"
 "</head>"
-"<body style='background-color:#1a8cff;'>"
+"<body style='background-color:#eee;'>"
 "<form action='guardar_conf' method='get'>"
 "<center><p>Ingrese Wifi</p></center>"
-"<center>SSID<input class='input1' name='ssid' type='text'></center>"
+"<center>SSID <input placeholder='Nombre Wifi' name='ssid' type='text'></center>"
 "<br>"
-"<center>PASS<input class='input1' name='pass' type='password'></center><br><br>"
-"<center><input class='boton' type='submit' value='GUARDAR'/></center><br><br>"
+"<center>PASS <input placeholder='Password' name='pass' type='password'></center><br><br>"
+"<center><input class='btn' type='submit' value='GUARDAR'/></center><br>"
 "</form>"
-"<center><a href='escanear'><button class='boton'>ESCANEAR</button></a><br><br>";
+"<center><a href='escanear'><button class='btn'>ESCANEAR</button></a><br><br>";
 
 String paginafin = "</body>"
 "</html>";
@@ -88,16 +101,38 @@ void escanear() {
   {
     Serial.print(n);
     Serial.println(" redes encontradas");
-    mensaje = "";
+    mensaje = "<table><tr><th>Name</th><th>Rssi</th></tr>";
     for (int i = 0; i < n; ++i)
     {
       // agrega al STRING "mensaje" la información de las redes encontradas 
-      mensaje = (mensaje)+"<p>" + String(i + 1) + ": " + WiFi.SSID(i) + " (" + WiFi.RSSI(i) + ") Ch: " + WiFi.channel(i) + " Enc: " + WiFi.encryptionType(i) + " </p>\r\n";
+      mensaje = (mensaje)+"<tr><td>" + WiFi.SSID(i) + "</td> <td>" + WiFi.RSSI(i) + "</td></tr>\r\n";
       delay(10);
     }
+    mensaje = mensaje +"</table>";
     Serial.println(mensaje);
     paginaConfig();
   }
+}
+
+void wifi_config() {
+  int len_ssid = 0;
+  int len_pass = 0;
+
+  len_ssid = sizeof(ssid);
+  len_pass = sizeof(password);
+
+  String wifi_id = "";
+  String wifi_pass = "";
+
+  Serial.println("SSid:");
+  wifi_id = leerEeprom(0,len_ssid);
+  Serial.println("psw:");
+  wifi_pass = leerEeprom(len_ssid,(len_ssid +len_pass));
+  wifi_id.toCharArray(ssid,sizeof(ssid));
+  wifi_pass.toCharArray(password,sizeof(password));
+  Serial.println(wifi_id);
+  Serial.println(wifi_pass);
+
 }
 
 void guardar_conf() {
@@ -106,7 +141,15 @@ void guardar_conf() {
   Serial.println(server.arg("pass"));
   grabarEeprom(sizeof(ssid), server.arg("pass"));
   mensaje = "Configuracion Guardada...";
-  paginaConfig();
+  wifi_config();
+  setup_wifi();
+  if(WiFi.status() != WL_CONNECTED){
+    Serial.println("Clave Invalida");
+    paginaConfig();
+  }
+  else{
+    ESP.restart();
+  }  
 }
 
 void modoconf() {
@@ -128,26 +171,10 @@ void modoconf() {
 }
 
 void setup() {
-  String wifi_id = "";
-  String wifi_pass = "";
-  int len_ssid = 0;
-  int len_pass = 0;
-
-  len_ssid = sizeof(ssid);
-  len_pass = sizeof(password);
-
   Serial.begin(9600);
   EEPROM.begin(512);
   dht.begin();
-  Serial.println("SSid:");
-  wifi_id = leerEeprom(0,len_ssid);
-  Serial.println("psw:");
-  wifi_pass = leerEeprom(len_ssid,(len_ssid +len_pass));
-  wifi_id.toCharArray(ssid,sizeof(ssid));
-  wifi_pass.toCharArray(password,sizeof(password));
-  Serial.println(wifi_id);
-  Serial.println(wifi_pass);
-
+  wifi_config();
   setup_wifi();
   if(WiFi.status() != WL_CONNECTED){
     Serial.println("modo softAp iniciado");
@@ -155,6 +182,7 @@ void setup() {
   }
   Serial.println(WiFi.localIP());
   delay(10);
+
 }
 
 void loop() {
