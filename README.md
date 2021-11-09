@@ -4,7 +4,11 @@
 
 
 El dispositivo levanta una red Wifi para ingresar el ssid y password de una red wifi cercana.
-Luego de esto empieza a medir la temperatura y humedad del ambiente.
+Luego de esto empieza a medir la temperatura y humedad del ambiente y luego se duerme por una hora
+
+## Pines GPIO ##
+* D5: Sensor de DHT22
+* D0: Pin reset del ESP8266
 
 
 ## Modo de uso ##
@@ -35,8 +39,11 @@ Clave Guardada
 
 
 The device raises a Wifi network to enter the ssid and password of a nearby network.
-After that it starts measuring the temperature and humidity of the environment.
+After that it starts measuring the temperature and humidity of the environment, and then sleeps for an hour.
 
+## GPIO pins ##
+* D5: DHT22 sensor
+* D0: ESP8266 reset pin
 
 ## Usage mode ##
 * Wifi Ssid: TEMP-WIFI

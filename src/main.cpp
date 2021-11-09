@@ -85,6 +85,11 @@ String pagina = "<!DOCTYPE html>"
   "margin: 8px 0;"
   "border-radius: 4px;"
   "}"
+  ".center h1{"
+  "text-align: center;"
+  "padding: 20px 0;"
+  "border-bottom: 1px solid silver;"
+  "}"
 "</style>"
 "</head>"
 "<body style='background-color:#eee;'>"
@@ -186,6 +191,12 @@ void modoconf() {
   setup_wifi();
 }
 
+void deep_sleep(int stime_sleep) {
+  //Requiere conectar el pin D0 al pin de reset del ESP32
+
+  Serial.println("entrando en modo de sleep");
+  ESP.deepSleep(stime_sleep * 1000000,); //segundos * 1000000 = segundos
+
 void setup() {
   Serial.begin(9600);
   EEPROM.begin(512);
@@ -215,6 +226,7 @@ void loop() {
     Serial.print("Humedad: ");
     Serial.print(hum);
     Serial.println(" %");
+    deep_sleep(10);
   }
   delay(1000);
 }
