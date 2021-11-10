@@ -195,7 +195,8 @@ void deep_sleep(int stime_sleep) {
   //Requiere conectar el pin D0 al pin de reset del ESP32
 
   Serial.println("entrando en modo de sleep");
-  ESP.deepSleep(stime_sleep * 1000000,); //segundos * 1000000 = segundos
+  ESP.deepSleep(stime_sleep * 1000000); //segundos * 1000000 = segundos
+}
 
 void setup() {
   Serial.begin(9600);
