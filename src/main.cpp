@@ -4,8 +4,10 @@
 #include "DHT.h"
 #include "EEPROM.h"
 #include "funcionesEeprom.h"
+#include "pages.h"
 
-#define DATA_DHT22 D5 // Pin para el sensor DHT22
+
+#define DATA_DHT22 D4 // Pin para el sensor DHT22
 #define DHTTYPE DHT22
 float hum;
 float temp;
@@ -51,64 +53,11 @@ void setup_wifi() {
   Serial.println("");
 }
 
-String mensaje = "";
+String mensaje = ""; // mensaje que se quiera añadir a la pagina web
 
-String pagina = "<!DOCTYPE html>"
-"<html>"
-"<head>"
-"<title>Temp Config</title>"
-"<meta name='viewport' content='width=device-width, initial-scale=1.0'>"
-"<meta charset='UTF-8'>"
-"<style>"
-  "tr:nth-child(even){"
-  "          background-color: #ddd;"
-  "      }"
-  ".btn{"
-    "background-color: rgb(179, 179, 179);"
-    "color: white;"
-    "padding: 14px 20px;"
-    "margin: 8px 0;"
-    "border: none;"
-    "cursor: pointer;"
-  "}"
-  ".center{"
-  "position: absolute;"
-  "top: 50%;"
-  "left: 50%;"
-  "transform: translate(-50%, -50%);"
-  "width: 300px;"
-  "background: white;"
-  "border-radius: 10px;"
-  "box-shadow: 10px 10px 15px rgba(0,0,0,0.05);"
-  "}"
-  "input{"
-  "margin: 8px 0;"
-  "border-radius: 4px;"
-  "}"
-  ".center h1{"
-  "text-align: center;"
-  "padding: 20px 0;"
-  "border-bottom: 1px solid silver;"
-  "}"
-"</style>"
-"</head>"
-"<body style='background-color:#eee;'>"
-"<div class='center'>"
-"<center><p>Ingrese Wifi</p></center>"
-"<form action='guardar_conf' method='get'>"
-"<center>SSID <input placeholder='Nombre Wifi' name='ssid' type='text'></center>"
-"<br>"
-"<center>PASS <input placeholder='Password' name='pass' type='password'></center><br>"
-"<center><input class='btn' type='submit' value='GUARDAR'/></center><br>"
-"</form>"
-"<center><a href='escanear'><button class='btn'>ESCANEAR</button></a><br><br>";
-
-String paginafin = "</div>"
-"</body>"
-"</html>";
 
 void paginaConfig(){
-  server.send(200, "text/html", pagina + mensaje + paginafin);
+  server.send(200, "text/html", body_page_wifi_scan + mensaje + footer_html);
 }
 
 void escanear() {
@@ -192,8 +141,8 @@ void modoconf() {
 }
 
 void deep_sleep(int stime_sleep) {
-  //Requiere conectar el pin D0 al pin de reset del ESP32
 
+  //Requiere conectar el pin D0 al pin de reset del ESP32
   Serial.println("entrando en modo de sleep");
   ESP.deepSleep(stime_sleep * 1000000); //segundos * 1000000 = segundos
 }
@@ -214,20 +163,14 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
   hum = dht.readHumidity();
   temp = dht.readTemperature();
   if (isnan(temp) || isnan(hum)) {
     Serial.println("Error de lectura");
   }
   else {
-    Serial.print("Temperatura: ");
-    Serial.print(temp);
-    Serial.print(" *C ");
-    Serial.print("Humedad: ");
-    Serial.print(hum);
-    Serial.println(" %");
-    deep_sleep(10);
+    Serial.println("Temperatura: " + String(temp) + "C");
+    Serial.println("Humedad: " + String(hum) + "%");
   }
   delay(1000);
 }
