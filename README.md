@@ -20,6 +20,10 @@ Luego de esto empieza a medir la temperatura y humedad del ambiente y luego se d
 Luego de ingresar un ssid y password, el dispositivo debe reiniciar para que se conecte a la red wifi.
 
 ## Capturas de pantalla ##
+Home
+
+<img src="./img/app.png" width="250" />
+
 Index
 
 <img src="./img/index.jpeg" width="250" />

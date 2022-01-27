@@ -2,46 +2,7 @@
 #define _PAGES_H
 #include <string.h>
 
-String body_page_wifi_scan = "<!DOCTYPE html>"
-"<html>"
-"<head>"
-"<title>Temp Config</title>"
-"<meta name='viewport' content='width=device-width, initial-scale=1.0'>"
-"<meta charset='UTF-8'>"
-"<style>"
-  "tr:nth-child(even){"
-  "          background-color: #ddd;"
-  "      }"
-  ".btn{"
-    "background-color: rgb(179, 179, 179);"
-    "color: white;"
-    "padding: 14px 20px;"
-    "margin: 8px 0;"
-    "border: none;"
-    "cursor: pointer;"
-  "}"
-  ".center{"
-  "position: absolute;"
-  "top: 50%;"
-  "left: 50%;"
-  "transform: translate(-50%, -50%);"
-  "width: 300px;"
-  "background: white;"
-  "border-radius: 10px;"
-  "box-shadow: 10px 10px 15px rgba(0,0,0,0.05);"
-  "}"
-  "input{"
-  "margin: 8px 0;"
-  "border-radius: 4px;"
-  "}"
-  ".center h1{"
-  "text-align: center;"
-  "padding: 20px 0;"
-  "border-bottom: 1px solid silver;"
-  "}"
-"</style>"
-"</head>"
-"<body style='background-color:#eee;'>"
+String body_page_wifi_scan = "<body>"
 "<div class='center'>"
 "<center><p>Ingrese Wifi</p></center>"
 "<form action='guardar_conf' method='get'>"
@@ -124,29 +85,37 @@ String header_html = "<!DOCTYPE html>"
 "        p{"
 "            color:rgb(93, 190, 214);"
 "        }"
+"        .emoji{"
+"            font-size: 200%;"
+"        }"
+"        #value-sensor{"
+"            font-weight: bold;"
+"            font-size: xx-large;"
+"        }"
 ""
 "    </style>"
 "</head>";
 
-String body_page_tempHum = "<body>"
-"    <div class='container border-gradient'>"
-"        <div class='title'>"
-"            <h1>Temperatura</h1>"
-"            <h1>&</h1>"
-"            <h1>Humedad</h1>"
-"        </div>"
-"        <div class='content-table'>"
-"            <br>"
-"            <table>"
-"                <tr>"
-"                    <th>Temperatura |</th>"
-"                    <th>Humedad</th>"
-"                </tr>"
-"                <tr>"
-"                    <td>{{temp}}</td>"
-"                    <td>{{humidity}}</td>"
-"                </tr>"
-"            </table>"
-"    </div>";
+String body_page_tempHum(int temp, int hum){
+    String body ="<body>";
+    body +="    <div class='container border-gradient'>";
+    body +="        <div class='content-table'>";
+    body +="            <br>";
+    body +="            <span class='emoji'>&#127777</span>";
+    body +="                <span> Temp </span>";
+    body +="                <span id='value-sensor'> ";
+    body += String(temp);
+    body +="°c</span>";
+    body +="                <br>";
+    body +="                <br>";
+    body +="                <span class='emoji'>&#128167</span>";
+    body +="                <span> Humedad </span>";
+    body +="                <span id='value-sensor'> ";
+    body +=String(hum);
+    body +="%</span>";
+    body +="       </div>";
+    body +="    </div>";
+    return body;
+}
 
 #endif

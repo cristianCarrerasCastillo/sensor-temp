@@ -18,11 +18,14 @@ char ssid[20];
 char password[20];
 
 ESP8266WebServer server(80);
-IPAddress ip(192, 168, 4, 1);
+IPAddress ip(192, 168, 1, 130);
 IPAddress gateway(192, 168, 0, 1);
 IPAddress subnet(255, 255, 255, 0);
+IPAddress dns(8, 8, 8, 8); // Google DNS
 IPAddress internalIp;
 WiFiClient client;
+
+
 
 DHT dht(DATA_DHT22, DHTTYPE);
 
@@ -32,6 +35,7 @@ void setup_wifi() {
   WiFi.config(ip,gateway,subnet);
   WiFi.mode(WIFI_STA); //para que no inicie el SoftAP en el modo normal
   WiFi.begin(ssid,password);
+  WiFi.config(ip, gateway, subnet, dns);
   Serial.println(ssid);
   Serial.println(password);  
   while (WiFi.status() != WL_CONNECTED and contconexion <30){
@@ -57,7 +61,7 @@ String mensaje = ""; // mensaje que se quiera añadir a la pagina web
 
 
 void paginaConfig(){
-  server.send(200, "text/html", body_page_wifi_scan + mensaje + footer_html);
+  server.send(200, "text/html", header_html + body_page_wifi_scan + mensaje + footer_html);
 }
 
 void escanear() {
@@ -147,7 +151,14 @@ void deep_sleep(int stime_sleep) {
   ESP.deepSleep(stime_sleep * 1000000); //segundos * 1000000 = segundos
 }
 
+void handle_OnConnect() {
+  temp = dht.readTemperature();
+  hum = dht.readHumidity();
+  server.send(200, "text/html",header_html + body_page_tempHum(temp,hum) + footer_html);
+}
+
 void setup() {
+  
   Serial.begin(9600);
   EEPROM.begin(512);
   dht.begin();
@@ -157,20 +168,16 @@ void setup() {
     Serial.println("modo softAp iniciado");
     modoconf();
   }
+  else{
+    server.on("/", handle_OnConnect);
+    server.begin();
+  }
   Serial.println(WiFi.localIP());
   delay(10);
 
 }
 
 void loop() {
-  hum = dht.readHumidity();
-  temp = dht.readTemperature();
-  if (isnan(temp) || isnan(hum)) {
-    Serial.println("Error de lectura");
-  }
-  else {
-    Serial.println("Temperatura: " + String(temp) + "C");
-    Serial.println("Humedad: " + String(hum) + "%");
-  }
-  delay(1000);
+  server.handleClient();
 }
+
