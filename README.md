@@ -1,20 +1,15 @@
 # ES #
 ## Sensor de temperatura y humedad, dispositivo IOT##
-**Proyecto en Desarrollo**
-
 
 El dispositivo levanta una red Wifi para ingresar el ssid y password de una red wifi cercana.
-Luego de esto empieza a medir la temperatura y humedad del ambiente y luego se duerme por una hora
-
+Luego de esto empieza a medir la temperatura y humedad del ambiente.
 ## Pines GPIO ##
-* D5: Sensor de DHT22
-* D0: Pin reset del ESP8266
-
+* D4: Sensor de DHT22
 
 ## Modo de uso ##
 * Wifi Ssid: TEMP-WIFI
 * Wifi Password: 12345678
-* Ip para configurar: 192.168.4.1
+* Ip para configurar: 192.168.1.130
 
 
 Luego de ingresar un ssid y password, el dispositivo debe reiniciar para que se conecte a la red wifi.
@@ -43,22 +38,26 @@ Clave Guardada
 
 
 The device raises a Wifi network to enter the ssid and password of a nearby network.
-After that it starts measuring the temperature and humidity of the environment, and then sleeps for an hour.
+After that it starts measuring the temperature and humidity of the environment.
 
 ## GPIO pins ##
-* D5: DHT22 sensor
-* D0: ESP8266 reset pin
+* D4: DHT22 sensor
+
 
 ## Usage mode ##
 * Wifi Ssid: TEMP-WIFI
 * Wifi Password: 12345678
-* Ip to configure: 192.168.4.1
+* Ip to configure: 192.168.1.130
 
 
 After entering a ssid and password, the device must restart to connect to the wifi network.
 
 
 ## Screenshots ##
+home
+
+<img src="./img/app.png" width="250" />
+
 Index
 
 <img src="./img/index.jpeg" width="250" />
