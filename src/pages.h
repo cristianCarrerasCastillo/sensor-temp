@@ -16,7 +16,7 @@ String body_page_wifi_scan(String red){
     body+="    <center>PASS <input placeholder='Password' name='pass' type='password'></center><br>";
     body+="    <center><input class='btn' type='submit' value='GUARDAR'/></center><br>";
     body+="    </form>";
-    body+="    <center><a href='escanear'><button class='btn'>ESCANEAR</button></a><br><br>;";
+    
     return body;
 }
 

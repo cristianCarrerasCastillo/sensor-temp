@@ -59,11 +59,6 @@ void setup_wifi() {
 
 String mensaje = ""; // mensaje que se quiera añadir a la pagina web
 
-
-void paginaConfig(){
-  server.send(200, "text/html", header_html + body_page_wifi_scan(mensaje) + footer_html);
-}
-
 void escanear() {
   int n = WiFi.scanNetworks(); //devuelve el número de redes encontradas
   Serial.println("escaneo terminado");
@@ -79,11 +74,16 @@ void escanear() {
     for (int i = 0; i < n; ++i)
     {
       // agrega al STRING "mensaje" la información de las redes encontradas 
-      mensaje = (mensaje)+"<option value=" + String(i) +"''" + WiFi.SSID(i) + "</option>\r\n";
+      mensaje = (mensaje)+"<option value=" + String(i) +"''>" + WiFi.SSID(i) + "</option>\r\n";
       delay(10);
     }
     Serial.println(mensaje);
   }
+}
+
+void paginaConfig(){
+  escanear();
+  server.send(200, "text/html", header_html + body_page_wifi_scan(mensaje) + footer_html);
 }
 
 void wifi_config() {
@@ -117,7 +117,6 @@ void guardar_conf() {
   setup_wifi();
   if(WiFi.status() != WL_CONNECTED){
     Serial.println("Clave Invalida");
-    escanear();
     paginaConfig();
   }
   else{
@@ -135,7 +134,6 @@ void modoconf() {
   borrarEeprom(0,100);//borra los datos ssid y pass que estaban guardados anteriormente al no encontrarlos en la memoria
   server.on("/", paginaConfig); //esta es la pagina de configuracion
   server.on("/guardar_conf", guardar_conf); //Graba en la eeprom la configuracion
-  server.on("/escanear", escanear); //Escanean las redes wifi disponibles
   server.begin();
   while (true) {
     server.handleClient();
