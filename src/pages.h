@@ -2,16 +2,23 @@
 #define _PAGES_H
 #include <string.h>
 
-String body_page_wifi_scan = "<body>"
-"<div class='center'>"
-"<center><p>Ingrese Wifi</p></center>"
-"<form action='guardar_conf' method='get'>"
-"<center>SSID <input placeholder='Nombre Wifi' name='ssid' type='text'></center>"
-"<br>"
-"<center>PASS <input placeholder='Password' name='pass' type='password'></center><br>"
-"<center><input class='btn' type='submit' value='GUARDAR'/></center><br>"
-"</form>"
-"<center><a href='escanear'><button class='btn'>ESCANEAR</button></a><br><br>";
+String body_page_wifi_scan(String red){
+    String body = "<body>";
+    body+="    <div class='center container border-gradient'>";
+    body+="    <center><h1>Ingrese Wifi</h1></center>";
+    body+="    <form action='guardar_conf' method='get'>";
+    body+="    <center>SSID <select placeholder='Nombre Wifi' name='ssid' type='text'>";
+    body+="        <option value='a'>Selecione WiFi</option>";
+    body+=red;
+    body+="    </select>";
+    body+="    </center>";
+    body+="    <br>";
+    body+="    <center>PASS <input placeholder='Password' name='pass' type='password'></center><br>";
+    body+="    <center><input class='btn' type='submit' value='GUARDAR'/></center><br>";
+    body+="    </form>";
+    body+="    <center><a href='escanear'><button class='btn'>ESCANEAR</button></a><br><br>;";
+    return body;
+}
 
 String footer_html = "    </div>"
 "    <footer>"
@@ -92,6 +99,9 @@ String header_html = "<!DOCTYPE html>"
 "            font-weight: bold;"
 "            font-size: xx-large;"
 "        }"
+"       tr:nth-child(odd){"
+"            background-color:  #474747;"
+"        }"
 ""
 "    </style>"
 "</head>";
@@ -105,7 +115,7 @@ String body_page_tempHum(int temp, int hum){
     body +="                <span> Temp </span>";
     body +="                <span id='value-sensor'> ";
     body += String(temp);
-    body +="°c</span>";
+    body +="°C</span>";
     body +="                <br>";
     body +="                <br>";
     body +="                <span class='emoji'>&#128167</span>";

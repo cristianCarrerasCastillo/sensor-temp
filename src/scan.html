@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class='center container border-gradient'>
+    <center><h1>Ingrese Wifi</h1></center>
+    <form action='guardar_conf' method='get'>
+    <center>SSID <select placeholder='Nombre Wifi' name='ssid' type='text'>
+        <option value="0">Selecione WiFi</option>
+        <option value="1">wifi 2</option>
+        <option value="2">wifi 3</option>
+        <option value="3">wifi 4</option>
+        <option value="4">wifi 5</option>
+    </select>
+    </center>
+    <br>
+    <center>PASS <input placeholder='Password' name='pass' type='password'></center><br>
+    <center><input class='btn' type='submit' value='GUARDAR'/></center><br>
+    </form>
+    <center><a href='escanear'><button class='btn'>ESCANEAR</button></a><br><br>
+</body>
+</html>
+

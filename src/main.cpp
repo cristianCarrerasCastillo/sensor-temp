@@ -61,7 +61,7 @@ String mensaje = ""; // mensaje que se quiera añadir a la pagina web
 
 
 void paginaConfig(){
-  server.send(200, "text/html", header_html + body_page_wifi_scan + mensaje + footer_html);
+  server.send(200, "text/html", header_html + body_page_wifi_scan(mensaje) + footer_html);
 }
 
 void escanear() {
@@ -75,16 +75,14 @@ void escanear() {
   {
     Serial.print(n);
     Serial.println(" redes encontradas");
-    mensaje = "<table><tr><th>Name</th><th>Rssi</th></tr>";
+    mensaje = "";
     for (int i = 0; i < n; ++i)
     {
       // agrega al STRING "mensaje" la información de las redes encontradas 
-      mensaje = (mensaje)+"<tr><td>" + WiFi.SSID(i) + "</td> <td>" + WiFi.RSSI(i) + "</td></tr>\r\n";
+      mensaje = (mensaje)+"<option value=" + String(i) +"''" + WiFi.SSID(i) + "</option>\r\n";
       delay(10);
     }
-    mensaje = mensaje +"</table>";
     Serial.println(mensaje);
-    paginaConfig();
   }
 }
 
@@ -119,6 +117,7 @@ void guardar_conf() {
   setup_wifi();
   if(WiFi.status() != WL_CONNECTED){
     Serial.println("Clave Invalida");
+    escanear();
     paginaConfig();
   }
   else{
@@ -141,7 +140,6 @@ void modoconf() {
   while (true) {
     server.handleClient();
   }
-  setup_wifi();
 }
 
 void deep_sleep(int stime_sleep) {
