@@ -74,7 +74,7 @@ void escanear() {
     for (int i = 0; i < n; ++i)
     {
       // agrega al STRING "mensaje" la información de las redes encontradas 
-      mensaje = (mensaje)+"<option value=" + String(i) +"''>" + WiFi.SSID(i) + "</option>\r\n";
+      mensaje = (mensaje)+"<option value='" + WiFi.SSID(i) +"'>" + WiFi.SSID(i) + "</option>\r\n";
       delay(10);
     }
     Serial.println(mensaje);
