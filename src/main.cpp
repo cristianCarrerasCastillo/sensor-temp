@@ -5,7 +5,7 @@
 #include "EEPROM.h"
 #include "funcionesEeprom.h"
 #include "pages.h"
-
+#include "sendMsgAws.h"
 
 #define DATA_DHT22 D4 // Pin para el sensor DHT22
 #define DHTTYPE DHT22
@@ -25,9 +25,10 @@ IPAddress dns(8, 8, 8, 8); // Google DNS
 IPAddress internalIp;
 WiFiClient client;
 
-
-
 DHT dht(DATA_DHT22, DHTTYPE);
+
+
+
 
 void setup_wifi() {
   // Conexión WIFI 
@@ -140,16 +141,17 @@ void modoconf() {
   }
 }
 
-void deep_sleep(int stime_sleep) {
+void deep_sleep(int64_t stime_sleep) {
 
   //Requiere conectar el pin D0 al pin de reset del ESP32
   Serial.println("entrando en modo de sleep");
-  ESP.deepSleep(stime_sleep * 1000000); //segundos * 1000000 = segundos
+  ESP.deepSleep(stime_sleep * 1000000); //stime_sleep * 1000000 = X segundos
 }
 
 void handle_OnConnect() {
   temp = dht.readTemperature();
   hum = dht.readHumidity();
+  
   server.send(200, "text/html",header_html + body_page_tempHum(temp,hum) + footer_html);
 }
 
@@ -167,6 +169,9 @@ void setup() {
   else{
     server.on("/", handle_OnConnect);
     server.begin();
+    Serial.println("WebServer iniciado...");
+    connectAws();
+    Serial.println("AWS conectado");
   }
   Serial.println(WiFi.localIP());
   delay(10);
@@ -174,6 +179,10 @@ void setup() {
 }
 
 void loop() {
+  temp = dht.readTemperature();
+  hum = dht.readHumidity();
   server.handleClient();
+  publishMsg(temp,hum);
+  deep_sleep(10000);
 }
 
