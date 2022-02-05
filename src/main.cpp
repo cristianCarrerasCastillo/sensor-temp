@@ -27,9 +27,6 @@ WiFiClient client;
 
 DHT dht(DATA_DHT22, DHTTYPE);
 
-
-
-
 void setup_wifi() {
   // Conexión WIFI 
   int contconexion=0;
