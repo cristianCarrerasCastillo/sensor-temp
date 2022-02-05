@@ -9,7 +9,6 @@
 #include <time.h>
 
 #define AWS_IOT_PUB_TOPIC "esp32/pub"
-#define AWS_IOT_SUBCRIBE_TOPIC "esp32/sub"
 
 BearSSL::WiFiServerSecure serverSSL(443);
 
@@ -68,7 +67,6 @@ void connectAws(){
         return;
     }
 
-    clientMqtt.subscribe(AWS_IOT_SUBCRIBE_TOPIC);
     Serial.println("Conectado a AWS");
 }
 void publishMsg(int temp, int hum){
